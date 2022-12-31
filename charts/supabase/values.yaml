@@ -5,7 +5,7 @@ studio:
   image:
     repository: supabase/studio
     pullPolicy: IfNotPresent
-    tag: "latest"
+    tag: "20221222-6b98c06"
 
   imagePullSecrets: []
   nameOverride: ""
@@ -87,7 +87,7 @@ auth:
   image:
     repository: supabase/gotrue
     pullPolicy: IfNotPresent
-    tag: "v2.2.12"
+    tag: "v2.31.1"
 
   imagePullSecrets: []
   nameOverride: ""
@@ -189,7 +189,7 @@ rest:
   image:
     repository: postgrest/postgrest
     pullPolicy: IfNotPresent
-    tag: "v9.0.0"
+    tag: "v10.1.1"
 
   imagePullSecrets: []
   nameOverride: ""
@@ -271,7 +271,7 @@ realtime:
   image:
     repository: supabase/realtime
     pullPolicy: IfNotPresent
-    tag: "v0.19.3"
+    tag: "v0.25.1"
 
   imagePullSecrets: []
   nameOverride: ""
@@ -362,7 +362,7 @@ meta:
   image:
     repository: supabase/postgres-meta
     pullPolicy: IfNotPresent
-    tag: "v0.29.0"
+    tag: "v0.55.2"
 
   imagePullSecrets: []
   nameOverride: ""
@@ -442,7 +442,7 @@ storage:
   image:
     repository: supabase/storage-api
     pullPolicy: IfNotPresent
-    tag: "v0.10.0"
+    tag: "v0.26.2"
 
   imagePullSecrets: []
   nameOverride: ""
@@ -540,7 +540,7 @@ kong:
   image:
     repository: kong
     pullPolicy: IfNotPresent
-    tag: "2.1"
+    tag: "2.8.1"
 
   imagePullSecrets: []
   nameOverride: ""
@@ -775,15 +775,20 @@ database:
   image:
     repository: supabase/postgres
     tag: 15.1.0.18
-  containerSecurityContext:
-    runAsUser: 0
   auth:
     postgresPassword: YOUR_PASSWORD
   primary:
+    containerSecurityContext:
+      runAsUser: 999
+    persistence:
+    extraEnvVars:
+      # patch for supabase/postgres/migrations/migrate.sh
+      - name: POSTGRES_HOST
+        value: /var/run/postgresql/
     command:
-      - postgres
-  extraEnv:
-    - name: POSTGRESQL_WAL_LEVEL
-      value: LOGICAL
-  initdb:
-    scriptsConfigMap: "{{ .Release.Name }}-initdb"
+      - /bin/sh
+      - -c
+      - "
+      sed -i 's+/var/lib/postgresql/data+/bitnami/postgresql/data+' /etc/postgresql/postgresql.conf &&
+      docker-entrypoint.sh 
+      -c config-file=/etc/postgresql/postgresql.conf"

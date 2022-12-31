@@ -8,12 +8,12 @@ studio:
   # enable: false # Disable the studio
   environment:
     SUPABASE_URL: http://api.localhost
-    STUDIO_PG_META_URL: http://RELEASE_NAME-kong.NAMESPACE.svc.cluster.local:8000/pg
+    STUDIO_PG_META_URL: http://RELEASE_NAME-supabase-kong.NAMESPACE.svc.cluster.local:8000/pg
     SUPABASE_ANON_KEY: "JWT_ANON_KEY"
     SUPABASE_SERVICE_KEY: "JWT_SERVICE_KEY"
 
   ingress:
-    enabled: 'true'
+    enabled: "true"
     className: ""
     annotations:
       kubernetes.io/ingress.class: nginx
@@ -75,7 +75,7 @@ storage:
   environment:
     ANON_KEY: "JWT_ANON_KEY"
     SERVICE_KEY: "JWT_SERVICE_KEY"
-    POSTGREST_URL: http://RELEASE_NAME-rest.NAMESPACE.svc.cluster.local:3000
+    POSTGREST_URL: http://RELEASE_NAME-supabase-rest.NAMESPACE.svc.cluster.local:3000
     PGRST_JWT_SECRET: "your-super-secret-jwt-token-with-at-least-32-characters-long"
     DATABASE_URL: postgres://postgres:MY_VERY_HARD_PASSWORD_FOR_DATABASE@RELEASE_NAME-database.NAMESPACE.svc.cluster.local:5432/postgres
     PGOPTIONS: -c search_path=storage,public
@@ -83,7 +83,7 @@ storage:
 # Kong Service (API Gateway)
 kong:
   ingress:
-    enabled: 'true' 
+    enabled: "true"
     className: ""
     annotations:
       kubernetes.io/ingress.class: nginx
@@ -96,6 +96,6 @@ kong:
             backend:
               serviceName: api
               servicePort: 80
-    credentials:
-      anonKey: "JWT_ANON_KEY"
-      serviceRoleKey: "JWT_SERVICE_KEY"
+  credentials:
+    anonKey: "JWT_ANON_KEY"
+    serviceRoleKey: "JWT_SERVICE_KEY"
