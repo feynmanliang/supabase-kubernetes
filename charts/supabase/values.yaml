@@ -773,16 +773,17 @@ kong:
 database:
   enabled: true
   image:
-    repository: tdeoliv/supabase-bitnami-postgres
-    tag: latest
-  # image:
-  #   tag: "12.9.0-debian-10-r40"
-  #   debug: true
+    repository: supabase/postgres
+    tag: 15.1.0.18
   containerSecurityContext:
     runAsUser: 0
-  postgresqlPassword: YOUR_PASSWORD
+  auth:
+    postgresPassword: YOUR_PASSWORD
+  primary:
+    command:
+      - postgres
   extraEnv:
     - name: POSTGRESQL_WAL_LEVEL
       value: LOGICAL
-  initdbScriptsConfigMap: "{{ .Release.Name }}-initdb"
-  # initdbScriptsConfigMap: my-release-initdb # This is required
+  initdb:
+    scriptsConfigMap: "{{ .Release.Name }}-initdb"
