@@ -2,18 +2,18 @@ apiVersion: v1
 entries:
   supabase:
   - apiVersion: v2
-    created: "2022-12-31T01:22:00.2817473Z"
+    created: "2022-12-31T05:31:23.6683513Z"
     dependencies:
     - alias: database
       condition: database.enabled
       name: postgresql
       repository: https://charts.bitnami.com/bitnami
-      version: 10.13.15
+      version: 15.1.0
     description: The open source Firebase alternative.
-    digest: c08e41e12aa0b42a4645ccfef2b065b0b6f5b357ef129f4d82bff4775f8fc67e
+    digest: d3a07c41bbcd9f33ccdcabe24cdd1b8b6b62fa342664d6cbd43b9742486bd06d
     name: supabase
     type: application
     urls:
     - https://supabase-community.github.io/supabase-kubernetes/build/supabase-0.0.1.tgz
     version: 0.0.1
-generated: "2022-12-31T01:22:00.27709Z"
+generated: "2022-12-31T05:31:23.6637058Z"
